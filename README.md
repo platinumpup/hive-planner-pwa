@@ -1,44 +1,48 @@
-# Hive Planner PWA
+# Hive Planner — Clean Toolbar Build
 
-A lightweight browser-based planner for building hive layouts on a large coordinate grid.
+This is a lightweight GitHub Pages-ready version of the Hive Planner.
 
-**Live App:**
-https://platinumpup.github.io/hive-planner-pwa/
+## What changed
 
-## How It Works
+- Cleaner top toolbar:
+  - Pan
+  - Draw dropdown
+  - Icons dropdown
+  - Text
+  - Undo
+  - More menu
+- Context actions only appear when something is selected:
+  - Lock / Unlock
+  - Back
+  - Front
+  - Delete
+- Bottom toolbar stays focused on:
+  - cursor x/y
+  - zoom percentage
+  - jump-to coordinates
+  - PNG export
+- PNG exports the current visible planner view.
+- Draw/Icons dropdowns still close after selecting an option.
+- Kept the existing visual style and rectangle preview behavior.
 
-Use the toolbar to move around the map, draw zones, place icons, add text labels, and manage objects.
+## Performance notes
 
-## Tools
+This version avoids extra libraries and keeps the toolbar update logic simple. The interface cleanup is mostly HTML/CSS and small JavaScript event changes, so it should stay light on slower computers.
 
-* **Pan:** Move around the planner.
-* **Draw:** Place rectangle zones. Click once to start, move your cursor to preview the shape, then click again to place it.
-* **Icons:** Place map markers.
-* **Text:** Add labels anywhere on the grid.
-* **Undo:** Reverse the last action.
-* **More:** Access reset, JSON save/load, delete mode, and clear options.
+## Updating GitHub
 
-## Navigation
+Copy these files into the root of your GitHub Pages repo, then run:
 
-* Use the mouse wheel to zoom in and out.
-* Drag the map to pan.
-* The bottom bar shows your live cursor coordinates and zoom percentage.
-* To jump to a specific spot, enter the `x` and `y` coordinates and click **Jump**.
+```bash
+git status
+git add .
+git commit -m "Clean up Hive Planner toolbar"
+git push
+```
 
-## Objects
+If GitHub rejects the push because the remote has changes first:
 
-* Click an object to select it.
-* Selected objects can be locked, moved backward, brought forward, or deleted.
-* Locked objects stay in place until unlocked.
-
-## Exporting
-
-* Click **PNG** to export the current visible planner view as an image.
-* Use **JSON** to copy, save, or reload planner data.
-
-## Install
-
-Hive Planner can be installed as a PWA from supported browsers.
-
-* On desktop, use the browser install option.
-* On mobile, use **Add to Home Screen**.
+```bash
+git pull --rebase
+git push
+```
