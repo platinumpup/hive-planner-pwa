@@ -78,42 +78,6 @@
   @keyframes splashSweep { 0% { transform:translateX(-30%) rotate(0deg); opacity:.4; } 55% { opacity:1; } 100% { transform:translateX(30%) rotate(0deg); opacity:.4; } }
 
   .hint { position:fixed; top:calc(var(--tool-tray-top, 62px) + 8px); left:10px; right:10px; z-index:9; pointer-events:none; text-align:center; color:#efffdc; font-size:12px; opacity:.86; text-shadow:0 2px 6px #000; transition:top .18s ease; }
-
-
-  .brand { font-weight:800; letter-spacing:.08em; text-transform:uppercase; font-size:13px; color:#efffdc; padding:0 8px; white-space:nowrap; }
-  .bar.compact { flex-wrap:nowrap; overflow-x:auto; scrollbar-width:none; }
-  .bar.compact::-webkit-scrollbar { display:none; }
-  .toolGroup { display:flex; gap:6px; align-items:center; flex:0 0 auto; }
-  #moreMenu {
-    position:fixed; z-index:35; display:none; grid-template-columns:1fr; gap:6px;
-    width:min(220px, calc(100vw - 16px)); padding:8px; box-sizing:border-box;
-    border:1px solid rgba(180,220,120,.26); border-radius:14px;
-    background:rgba(8,10,8,.94); backdrop-filter:blur(14px);
-    box-shadow:0 12px 34px rgba(0,0,0,.45);
-  }
-  #moreMenu.show { display:grid; }
-  #moreMenu button { width:100%; text-align:left; min-height:36px; padding:8px 10px; }
-  #objectActions {
-    position:fixed; right:8px; top:var(--context-top, 64px); z-index:28;
-    display:none; gap:6px; align-items:center; flex-wrap:wrap; padding:7px;
-    border:1px solid rgba(180,220,120,.25); border-radius:14px;
-    background:rgba(8,10,8,.90); backdrop-filter:blur(12px);
-    box-shadow:0 10px 28px rgba(0,0,0,.42);
-  }
-  #objectActions.show { display:flex; }
-  #selectionCount { color:var(--muted); font-size:12px; padding:0 4px; white-space:nowrap; }
-  #bottom { flex-wrap:nowrap; overflow-x:auto; scrollbar-width:none; }
-  #bottom::-webkit-scrollbar { display:none; }
-  #bottom .jumpGroup { display:flex; gap:6px; align-items:center; flex:0 0 auto; }
-  #bottom .jumpTitle { color:var(--muted); font-size:12px; white-space:nowrap; }
-  @media (max-width: 760px) {
-    .brand { display:none; }
-    button { padding:8px 9px; min-height:36px; }
-    .readout { min-width:132px; }
-    #objectActions { left:8px; right:8px; justify-content:center; }
-    #selectionCount { flex-basis:100%; text-align:center; }
-  }
-
 </style>
 </head>
 <body>
@@ -128,48 +92,32 @@
   </div>
 </div>
 <canvas id="canvas"></canvas>
-<div id="top" class="bar compact">
-  <div class="brand">Hive Planner</div>
-  <div class="toolGroup">
-    <button id="panBtn" class="active">Pan</button>
-    <button id="rectsBtn">Draw ▾</button>
-    <button id="iconsBtn">Icons ▾</button>
-    <button id="textBtn">Text</button>
-  </div>
-  <span class="spacer"></span>
-  <div class="toolGroup">
-    <button id="undoBtn">Undo</button>
-    <button id="moreBtn">More ⋯</button>
-  </div>
-</div>
-<div id="moreMenu">
-  <button id="deleteModeBtn">Delete Mode</button>
-  <button id="zoomOut">Zoom −</button>
-  <button id="zoomIn">Zoom +</button>
-  <button id="resetBtn">Reset View</button>
-  <button id="jsonBtn">JSON / Save</button>
-  <button id="clearBtn" class="danger">Clear All</button>
-</div>
-<div id="objectActions">
-  <span id="selectionCount">1 selected</span>
+<div id="top" class="bar">
+  <button id="panBtn" class="active">Pan</button>
+  <button id="rectsBtn">Rects</button>
+  <button id="iconsBtn">Icons</button>
+  <button id="textBtn">Text</button>
+  <button id="deleteBtn" class="danger">Delete</button>
   <button id="lockBtn">Lock</button>
   <button id="backBtn">Back</button>
   <button id="frontBtn">Front</button>
-  <button id="deleteBtn" class="danger">Delete</button>
+  <button id="undoBtn">Undo</button>
+  <button id="clearBtn" class="danger">Clear</button>
+  <span class="spacer"></span>
+  <button id="zoomOut">−</button>
+  <button id="zoomIn">+</button>
+  <button id="resetBtn">Reset</button>
 </div>
-<div class="hint" id="hint">Pan selects/moves • Shift/Ctrl multi-select • right-click deletes</div>
+<div class="hint" id="hint">Pan: Shift/Ctrl-click multi-select • drag selected group • right-click delete</div>
 <div id="rectPanel"></div>
 <div id="iconPanel"></div>
 <div id="bottom" class="bar">
   <div class="readout" id="readout">x: — y: —<br>zoom: —</div>
-  <span class="spacer"></span>
-  <div class="jumpGroup">
-    <span class="jumpTitle">Jump</span>
-    <label>x <input id="jumpX" inputmode="numeric" value="500"></label>
-    <label>y <input id="jumpY" inputmode="numeric" value="500"></label>
-    <button id="jumpBtn">Go</button>
-    <button id="pngBtn">PNG</button>
-  </div>
+  <label>x <input id="jumpX" inputmode="numeric" value="500"></label>
+  <label>y <input id="jumpY" inputmode="numeric" value="500"></label>
+  <button id="jumpBtn">Jump</button>
+  <button id="pngBtn">PNG</button>
+  <button id="jsonBtn">JSON</button>
 </div>
 <div id="jsonPanel">
   <textarea id="jsonText" spellcheck="false"></textarea>
@@ -219,10 +167,6 @@
   const textPanel = document.getElementById('textPanel');
   const textInput = document.getElementById('textInput');
   const coordMenu = document.getElementById('coordMenu');
-  const moreMenu = document.getElementById('moreMenu');
-  const moreBtn = document.getElementById('moreBtn');
-  const objectActions = document.getElementById('objectActions');
-  const selectionCount = document.getElementById('selectionCount');
   let dpr = Math.max(1, Math.min(1.5, window.devicePixelRatio || 1));
   let viewW=0, viewH=0;
   let zoom = 0.55;
@@ -249,7 +193,6 @@
   let currentIcon = 'location';
   let rectPanelOpen = false;
   let iconPanelOpen = false;
-  let moreMenuOpen = false;
   let pendingText = '';
   let lastTap = {time:0, x:null, y:null};
   let coordMenuCell = null;
@@ -371,7 +314,6 @@
     const lockedCount = selectedItems.filter(isLockedSelection).length;
     btn.textContent = count && lockedCount === count ? 'Unlock' : 'Lock';
     btn.classList.remove('locked');
-    updateObjectActions();
   }
   function toggleSelectedLock() {
     if (!selectedItems.length && selected) selectedItems = [selected];
@@ -542,24 +484,11 @@
     return { version:16, world:{x:WORLD,y:WORLD}, tileShape:'horizontal-rectangle', tile:{w:TILE_W,h:TILE_H}, origin:'bottom-left', rects: rects.map(r => ({...r, center: rectCenterCell(r)})), icons, texts };
   }
   function updateStyleButtons() {
-    const rectBtn = document.getElementById('rectsBtn');
-    const iconBtn = document.getElementById('iconsBtn');
-    const panBtn = document.getElementById('panBtn');
-    const textBtn = document.getElementById('textBtn');
-    const deleteModeBtn = document.getElementById('deleteModeBtn');
-    if (rectBtn) {
-      const label = currentStyle === 'outline' ? 'Outline' : currentStyle.charAt(0).toUpperCase() + currentStyle.slice(1);
-      rectBtn.textContent = mode === 'rect' ? `Draw: ${label} ▾` : 'Draw ▾';
-      rectBtn.classList.toggle('active', mode==='rect');
-    }
-    if (iconBtn) {
-      const def = ICON_DEF_MAP[currentIcon];
-      iconBtn.textContent = mode === 'icon' && def ? `Icons: ${def.label} ▾` : 'Icons ▾';
-      iconBtn.classList.toggle('active', mode==='icon');
-    }
-    if (panBtn) panBtn.classList.toggle('active', mode==='pan');
-    if (textBtn) textBtn.classList.toggle('active', mode==='text');
-    if (deleteModeBtn) deleteModeBtn.classList.toggle('active', mode==='delete');
+    document.getElementById('rectsBtn').classList.toggle('active', mode==='rect');
+    document.getElementById('panBtn').classList.toggle('active', mode==='pan');
+    document.getElementById('iconsBtn').classList.toggle('active', mode==='icon');
+    document.getElementById('textBtn').classList.toggle('active', mode==='text');
+    document.getElementById('deleteBtn').classList.toggle('active', mode==='delete');
     document.querySelectorAll('.iconTool').forEach(btn => btn.classList.toggle('active', mode==='icon' && btn.dataset.key===currentIcon));
     document.querySelectorAll('.rectTool').forEach(btn => btn.classList.toggle('active', mode==='rect' && btn.dataset.style===currentStyle));
   }
@@ -594,49 +523,9 @@
     if (rectPanelOpen) positionToolMenu('rect');
     if (iconPanelOpen) positionToolMenu('icon');
   }
-  function positionMoreMenu() {
-    if (!moreMenu || !moreBtn) return;
-    const buttonBox = moreBtn.getBoundingClientRect();
-    const menuWidth = Math.min(220, window.innerWidth - 16);
-    const left = Math.max(8, Math.min(buttonBox.right - menuWidth, window.innerWidth - menuWidth - 8));
-    const top = Math.ceil(buttonBox.bottom + 8);
-    moreMenu.style.width = menuWidth + 'px';
-    moreMenu.style.left = left + 'px';
-    moreMenu.style.top = top + 'px';
-  }
-  function closeMoreMenu() {
-    moreMenuOpen = false;
-    if (moreMenu) moreMenu.classList.remove('show');
-    if (moreBtn) moreBtn.classList.remove('active');
-  }
-  function toggleMoreMenu() {
-    closeToolMenus();
-    hideCoordMenu();
-    if (!moreMenu || !moreBtn) return;
-    moreMenuOpen = !moreMenuOpen;
-    if (moreMenuOpen) {
-      positionMoreMenu();
-      moreMenu.classList.add('show');
-      moreBtn.classList.add('active');
-    } else {
-      closeMoreMenu();
-    }
-  }
-  function updateObjectActions() {
-    if (!objectActions) return;
-    const count = selectedItems.length;
-    objectActions.classList.toggle('show', count > 0);
-    if (selectionCount) selectionCount.textContent = `${count} selected`;
-    const topBar = document.getElementById('top');
-    if (topBar) {
-      const top = Math.ceil(topBar.getBoundingClientRect().bottom + 8);
-      document.documentElement.style.setProperty('--context-top', top + 'px');
-    }
-  }
   function openToolMenu(kind) {
     const alreadyOpen = (kind === 'rect' && rectPanelOpen) || (kind === 'icon' && iconPanelOpen);
     closeToolMenus();
-    closeMoreMenu();
     hideCoordMenu();
     textPanel.style.display='none';
     startCell = null; hoverCell = null; dragTarget = null;
@@ -659,7 +548,6 @@
     startCell = null; hoverCell = null; dragTarget = null;
     if (m !== 'text') textPanel.style.display='none';
     closeToolMenus();
-    closeMoreMenu();
     hideCoordMenu();
     updateStyleButtons();
     if (m === 'rect') {
@@ -1171,12 +1059,12 @@
       const [item] = arr.splice(i, 1);
       arr.push(item);
       selected.index = arr.length - 1;
-      saveLocal(); updateLockButton(); draw();
+      saveLocal(); draw();
     } else if (direction === 'back' && i > 0) {
       const [item] = arr.splice(i, 1);
       arr.unshift(item);
       selected.index = 0;
-      saveLocal(); updateLockButton(); draw();
+      saveLocal(); draw();
     }
   }
 
@@ -1217,28 +1105,20 @@
   document.getElementById('rectsBtn').onclick=()=>openToolMenu('rect');
   document.getElementById('iconsBtn').onclick=()=>openToolMenu('icon');
   document.getElementById('textBtn').onclick=()=>setMode('text');
-  document.getElementById('deleteBtn').onclick=()=>deleteSelectedItems();
+  document.getElementById('deleteBtn').onclick=()=>setMode('delete');
   document.getElementById('lockBtn').onclick=()=>toggleSelectedLock();
-  if (moreBtn) moreBtn.onclick=()=>toggleMoreMenu();
-  document.getElementById('deleteModeBtn').onclick=()=>{ closeMoreMenu(); setMode('delete'); };
   document.addEventListener('pointerdown', e => {
+    if (!rectPanelOpen && !iconPanelOpen) return;
     const target = e.target;
-    if (rectPanelOpen || iconPanelOpen) {
-      const insideMenu = rectPanel.contains(target) || iconPanel.contains(target);
-      const insideButtons = document.getElementById('rectsBtn').contains(target) || document.getElementById('iconsBtn').contains(target);
-      if (!insideMenu && !insideButtons) closeToolMenus();
-    }
-    if (moreMenuOpen) {
-      const insideMore = moreMenu && moreMenu.contains(target);
-      const insideMoreButton = moreBtn && moreBtn.contains(target);
-      if (!insideMore && !insideMoreButton) closeMoreMenu();
-    }
+    const insideMenu = rectPanel.contains(target) || iconPanel.contains(target);
+    const insideButtons = document.getElementById('rectsBtn').contains(target) || document.getElementById('iconsBtn').contains(target);
+    if (!insideMenu && !insideButtons) closeToolMenus();
   });
   document.getElementById('zoomIn').onclick=()=>setZoomAt(zoom*1.25, viewW/2, viewH/2);
   document.getElementById('zoomOut').onclick=()=>setZoomAt(zoom/1.25, viewW/2, viewH/2);
-  document.getElementById('resetBtn').onclick=()=>{ closeMoreMenu(); zoom=.55; centerOnCell(500,500); };
+  document.getElementById('resetBtn').onclick=()=>{ zoom=.55; centerOnCell(500,500); };
   document.getElementById('jumpBtn').onclick=()=>centerOnCell(document.getElementById('jumpX').value, document.getElementById('jumpY').value);
-  document.getElementById('pngBtn').onclick=()=>{ closeMoreMenu(); exportCurrentViewPNG(); };
+  document.getElementById('pngBtn').onclick=()=>exportCurrentViewPNG();
   document.getElementById('undoBtn').onclick=()=>undoLast();
   document.getElementById('frontBtn').onclick=()=>moveSelectedLayer('front');
   document.getElementById('backBtn').onclick=()=>moveSelectedLayer('back');
@@ -1254,7 +1134,7 @@
   };
 
   const panel=document.getElementById('jsonPanel'), txt=document.getElementById('jsonText');
-  document.getElementById('jsonBtn').onclick=()=>{ closeMoreMenu(); txt.value=JSON.stringify(exportData(),null,2); panel.style.display='flex'; };
+  document.getElementById('jsonBtn').onclick=()=>{ txt.value=JSON.stringify(exportData(),null,2); panel.style.display='flex'; };
   document.getElementById('closeJsonBtn').onclick=()=>panel.style.display='none';
   document.getElementById('copyBtn').onclick=async()=>{ txt.select(); try{ await navigator.clipboard.writeText(txt.value); }catch(e){ document.execCommand('copy'); } };
   document.getElementById('loadBtn').onclick=()=>{
@@ -1355,8 +1235,8 @@
   });
   // No auto-dismiss: the splash remains visible until Enter Planner is clicked.
 
-  bg.onload=()=>{ pattern=ctx.createPattern(bg,'repeat'); updateStyleButtons(); resize(); loadLocal(); updateObjectActions(); centerOnCell(500,500); };
-  window.addEventListener('resize', () => { resize(); positionMoreMenu(); updateObjectActions(); });
+  bg.onload=()=>{ pattern=ctx.createPattern(bg,'repeat'); updateStyleButtons(); resize(); loadLocal(); centerOnCell(500,500); };
+  window.addEventListener('resize', resize);
   resize();
 })();
 </script>
