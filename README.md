@@ -2,8 +2,7 @@
 
 A lightweight browser-based planner for building hive layouts on a large coordinate grid.
 
-Live app:
-
+**Live App:**
 https://platinumpup.github.io/hive-planner-pwa/
 
 ## How It Works
@@ -12,52 +11,34 @@ Use the toolbar to move around the map, draw zones, place icons, add text labels
 
 ## Tools
 
-**Pan**
-Move around the planner.
-
-**Draw**
-Place rectangle zones. Click once to start, move your cursor to preview the shape, then click again to place it.
-
-**Icons**
-Place map markers.
-
-**Text**
-Add labels anywhere on the grid.
-
-**Undo**
-Reverse the last action.
-
-**More**
-Access reset, JSON save/load, delete mode, and clear options.
+* **Pan:** Move around the planner.
+* **Draw:** Place rectangle zones. Click once to start, move your cursor to preview the shape, then click again to place it.
+* **Icons:** Place map markers.
+* **Text:** Add labels anywhere on the grid.
+* **Undo:** Reverse the last action.
+* **More:** Access reset, JSON save/load, delete mode, and clear options.
 
 ## Navigation
 
-Use the mouse wheel to zoom in and out.
-
-Drag the map to pan.
-
-The bottom bar shows your live cursor coordinates and zoom percentage.
-
-To jump to a specific spot, enter the `x` and `y` coordinates and click **Jump**.
+* Use the mouse wheel to zoom in and out.
+* Drag the map to pan.
+* The bottom bar shows your live cursor coordinates and zoom percentage.
+* To jump to a specific spot, enter the `x` and `y` coordinates and click **Jump**.
 
 ## Objects
 
-Click an object to select it.
-
-Selected objects can be locked, moved backward, brought forward, or deleted.
-
-Locked objects stay in place until unlocked.
+* Click an object to select it.
+* Selected objects can be locked, moved backward, brought forward, or deleted.
+* Locked objects stay in place until unlocked.
 
 ## Exporting
 
-Click **PNG** to export the current visible planner view as an image.
-
-Use **JSON** to copy, save, or reload planner data.
+* Click **PNG** to export the current visible planner view as an image.
+* Use **JSON** to copy, save, or reload planner data.
 
 ## Install
 
 Hive Planner can be installed as a PWA from supported browsers.
 
-On desktop, use the browser install option.
-
-On mobile, use **Add to Home Screen**.
+* On desktop, use the browser install option.
+* On mobile, use **Add to Home Screen**.
