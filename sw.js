@@ -1,11 +1,14 @@
-const CACHE_NAME = 'hive-planner-v5-preview-rectangles-v1';
+const CACHE_NAME = 'hive-planner-v11-new-light-video-splash';
 const ASSETS = [
   './',
   './index.html',
   './manifest.webmanifest',
   './icons/icon-180.png',
   './icons/icon-192.png',
-  './icons/icon-512.png'
+  './icons/icon-512.png',
+  './icons/cat-bees-transparent.png',
+  './icons/oof-organizedchaos-animated.mp4',
+  './icons/oof-organizedchaos-animated-poster.jpg'
 ];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS)));

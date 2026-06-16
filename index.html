@@ -15,6 +15,7 @@
 <link rel="shortcut icon" href="favicon.ico" />
 <link rel="icon" href="icons/icon-192.png" />
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Bangers&display=swap');
   :root { --bg:#070806; --panel:rgba(8,10,8,.86); --line:rgba(178,216,110,.78); --text:#f4ffd6; --muted:#bfd09b; --accent:#9cff59; --danger:#ff6b6b; }
   html,body { margin:0; height:100%; overflow:hidden; background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif; }
   #canvas { width:100vw; height:100vh; display:block; touch-action:none; background:#161810; }
@@ -63,21 +64,96 @@
 
   #splash {
     position:fixed; inset:0; z-index:1000; display:flex; align-items:center; justify-content:center;
-    background:radial-gradient(circle at 50% 35%, rgba(156,255,89,.16), transparent 30%), linear-gradient(180deg,#070806 0%,#10130b 55%,#050604 100%);
-    color:var(--text); transition:opacity .45s ease, visibility .45s ease; overflow:hidden;
+    background:#000;
+    color:#fff; transition:opacity .45s ease, visibility .45s ease; overflow:hidden;
   }
   #splash.hidden { opacity:0; visibility:hidden; pointer-events:none; }
-  #splash::before { content:""; position:absolute; inset:-20%; background:linear-gradient(115deg, transparent 0 43%, rgba(156,255,89,.08) 48%, transparent 54%); animation:splashSweep 2.4s ease-in-out infinite; }
-  #splashCard { position:relative; width:min(520px, calc(100vw - 34px)); padding:28px 24px 22px; border-radius:24px; border:1px solid rgba(180,220,120,.32); background:rgba(8,10,8,.78); box-shadow:0 22px 80px rgba(0,0,0,.62), 0 0 42px rgba(156,255,89,.10); backdrop-filter:blur(18px); text-align:center; }
-  #splashKicker { color:var(--accent); letter-spacing:.24em; text-transform:uppercase; font-size:12px; margin-bottom:10px; }
-  #splashTitle { font-size:clamp(34px, 8vw, 58px); line-height:.95; font-weight:800; letter-spacing:.04em; text-transform:uppercase; text-shadow:0 0 24px rgba(156,255,89,.32); }
-  #splashSub { margin:12px auto 18px; max-width:390px; color:var(--muted); font-size:14px; line-height:1.45; }
-  #splashBar { height:8px; border-radius:999px; overflow:hidden; background:rgba(255,255,255,.10); border:1px solid rgba(215,255,160,.18); }
-  #splashFill { height:100%; width:0%; border-radius:inherit; background:linear-gradient(90deg, rgba(156,255,89,.45), rgba(244,255,214,.95)); animation:splashLoad 4.2s ease forwards; }
-  #splashEnter { margin-top:18px; min-width:180px; background:rgba(156,255,89,.20); border-color:rgba(156,255,89,.75); box-shadow:0 0 22px rgba(156,255,89,.12); cursor:pointer; }
-  #splashEnter:hover, #splashEnter:focus { background:rgba(156,255,89,.30); border-color:rgba(244,255,214,.90); outline:none; }
+  #splash::before {
+    content:""; position:absolute; inset:0;
+    background:radial-gradient(circle at 50% 50%, rgba(0,0,0,0) 0 45%, rgba(0,0,0,.46) 72%, #000 100%);
+    pointer-events:none;
+  }
+  #splash::after {
+    content:""; position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(0,0,0,.12), rgba(0,0,0,0) 42%, rgba(0,0,0,.34));
+    pointer-events:none;
+  }
+  #splashCard {
+    position:relative; z-index:1; width:min(1050px, calc(100vw - 18px)); padding:16px 8px 20px;
+    text-align:center; border-radius:26px; background:transparent;
+    filter:drop-shadow(0 24px 38px rgba(0,0,0,.88));
+  }
+  #splashKicker {
+    color:#ffffff; letter-spacing:.20em; text-transform:uppercase; font-size:clamp(10px, 2.2vw, 13px);
+    margin-bottom:6px; opacity:.78; text-shadow:0 2px 0 #050545, 0 0 14px rgba(0,209,255,.42);
+  }
+  #splashTitle {
+    display:grid; justify-items:center; align-items:center;
+    line-height:.78; text-transform:uppercase; perspective:900px;
+  }
+  #splashLogo {
+    display:block; width:min(720px, 92vw); max-height:min(58vh, 720px); object-fit:contain; margin:0 auto;
+    background:#000; border:0; outline:0;
+    filter:drop-shadow(0 18px 24px rgba(0,0,0,.85));
+    transform:translateZ(0); will-change:transform; backface-visibility:hidden;
+  }
+  .splashVideo { mix-blend-mode:normal; }
+  #splashTitle .word {
+    display:block; font-family:"Bangers", "Luckiest Guy", "Cooper Black", "Arial Rounded MT Bold", "Comic Sans MS", "Arial Black", system-ui, sans-serif;
+    font-size:clamp(64px, 18.5vw, 152px); font-weight:400; letter-spacing:.018em;
+    -webkit-text-stroke:clamp(1px, .38vw, 3px) rgba(255,255,255,.90);
+    paint-order:stroke fill; white-space:nowrap;
+    transform:rotate(-1.5deg) skewX(-1deg);
+    filter:drop-shadow(0 18px 22px rgba(0,0,0,.82));
+  }
+  #splashTitle .word.planner { transform:rotate(.8deg) skewX(-1deg); }
+  #splashTitle .word.hive {
+    color:#ffe61b;
+    text-shadow:
+      2px 2px 0 #fff6a7,
+      4px 4px 0 #ffae00,
+      7px 7px 0 #ff7900,
+      11px 11px 0 #b53b00,
+      15px 15px 0 #5e1600,
+      0 0 18px rgba(255,221,0,.40),
+      0 16px 30px rgba(0,0,0,.86);
+  }
+  #splashTitle .word.planner {
+    color:#35d8ff;
+    text-shadow:
+      2px 2px 0 #dcfbff,
+      4px 4px 0 #2b9bff,
+      7px 7px 0 #2340e8,
+      11px 11px 0 #21118f,
+      15px 15px 0 #10004f,
+      0 0 18px rgba(42,222,255,.42),
+      0 16px 30px rgba(0,0,0,.88);
+  }
+  #splashSub {
+    margin:12px auto 12px; max-width:390px; color:#ffffff; font-size:clamp(12px, 3.1vw, 16px); line-height:1.45;
+    letter-spacing:.12em; text-transform:uppercase; text-shadow:0 2px 0 #000, 0 0 14px rgba(42,222,255,.35);
+  }
+  #splashBar {
+    width:min(430px, 82vw); height:11px; margin:0 auto; border-radius:999px; overflow:hidden;
+    background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.38);
+    box-shadow:inset 0 2px 8px rgba(0,0,0,.55), 0 0 22px rgba(44,211,255,.20);
+  }
+  #splashFill {
+    height:100%; width:0%; border-radius:inherit;
+    background:linear-gradient(90deg, #26d8ff 0%, #4b7dff 50%, #ffe51c 100%);
+    box-shadow:0 0 18px rgba(255,229,28,.50);
+    animation:splashLoad 3.2s ease forwards;
+  }
+  #splashEnter {
+    margin-top:18px; min-width:215px; color:#ffffff !important; font-weight:900; letter-spacing:.08em; text-transform:uppercase; text-shadow:0 2px 0 rgba(0,0,0,.72), 0 0 10px rgba(0,0,0,.45);
+    background:linear-gradient(180deg,#fff27a 0%,#ffbb18 58%,#ff8500 100%);
+    border:2px solid rgba(255,255,255,.86); border-radius:999px;
+    box-shadow:0 5px 0 #b44400, 0 0 24px rgba(255,191,0,.25); cursor:pointer;
+  }
+  #splashEnter:hover, #splashEnter:focus { filter:brightness(1.08); outline:none; }
+  #splashCredit { margin-top:12px; font-size:11px; color:rgba(255,255,255,.58); letter-spacing:.08em; }
   @keyframes splashLoad { to { width:100%; } }
-  @keyframes splashSweep { 0% { transform:translateX(-30%) rotate(0deg); opacity:.4; } 55% { opacity:1; } 100% { transform:translateX(30%) rotate(0deg); opacity:.4; } }
+  @keyframes splashSweep { 0% { transform:translateX(-20%) rotate(0deg); opacity:.35; } 50% { opacity:1; } 100% { transform:translateX(20%) rotate(0deg); opacity:.35; } }
 
   .hint { position:fixed; top:calc(var(--tool-tray-top, 62px) + 8px); left:10px; right:10px; z-index:9; pointer-events:none; text-align:center; color:#efffdc; font-size:12px; opacity:.86; text-shadow:0 2px 6px #000; transition:top .18s ease; }
 
@@ -108,6 +184,15 @@
   #bottom::-webkit-scrollbar { display:none; }
   #bottom .jumpGroup { display:flex; gap:6px; align-items:center; flex:0 0 auto; }
   #bottom .jumpTitle { color:var(--muted); font-size:12px; white-space:nowrap; }
+  .textSizeRow { display:flex; gap:10px; align-items:center; flex-wrap:wrap; color:var(--muted); font-size:13px; }
+  #textSizeRange { flex:1 1 180px; width:auto; min-width:150px; accent-color:#35d8ff; }
+  #textSizeValue { min-width:44px; color:#fff7d6; font-weight:800; }
+  #editTextBtn { display:none; }
+  body.toolbarMini #top { right:auto; width:auto; max-width:calc(100vw - 16px); border-radius:999px; padding:6px; }
+  body.toolbarMini #top .brand, body.toolbarMini #top .spacer, body.toolbarMini #top #rectsBtn, body.toolbarMini #top #iconsBtn, body.toolbarMini #top #textBtn, body.toolbarMini #top #undoBtn { display:none; }
+  body.toolbarMini #top button { min-height:34px; padding:7px 10px; }
+  body.toolbarMini #top #panBtn { min-width:46px; }
+  body.toolbarMini .hint { top:calc(var(--tool-tray-top, 48px) + 8px); }
   @media (max-width: 760px) {
     .brand { display:none; }
     button { padding:8px 9px; min-height:36px; }
@@ -122,11 +207,13 @@
 
 <div id="splash">
   <div id="splashCard">
-    <div id="splashKicker">OOF | OrganizedChaos</div>
-    <div id="splashTitle">Hive Planner Engine</div>
-    <div id="splashSub">2026 PlatinumBoy©</div>
+    <div id="splashTitle" aria-label="[OOF] OrganizedChaos">
+      <video id="splashLogo" class="splashVideo" src="icons/oof-organizedchaos-animated.mp4" poster="icons/oof-organizedchaos-animated-poster.jpg" autoplay muted loop playsinline preload="auto" aria-label="[OOF] OrganizedChaos animated splash"></video>
+    </div>
+    <div id="splashSub"><i>Loading Hive Planner Engine...</i></div>
     <div id="splashBar"><div id="splashFill"></div></div>
-    <button id="splashEnter">Enter Planner</button>
+    <button id="splashEnter">ENTER</button>
+    <div id="splashCredit">2026 PlatinumBoy©</div>
   </div>
 </div>
 <canvas id="canvas"></canvas>
@@ -150,10 +237,12 @@
   <button id="zoomIn">Zoom +</button>
   <button id="resetBtn">Reset View</button>
   <button id="jsonBtn">JSON / Save</button>
+  <button id="compactBtn">Compact Toolbar</button>
   <button id="clearBtn" class="danger">Clear All</button>
 </div>
 <div id="objectActions">
   <span id="selectionCount">1 selected</span>
+  <button id="editTextBtn">Edit Text</button>
   <button id="lockBtn">Lock</button>
   <button id="backBtn">Back</button>
   <button id="frontBtn">Front</button>
@@ -184,8 +273,12 @@
   </div>
 </div>
 <div id="textPanel">
-  <div style="font-size:13px;color:var(--muted)">Enter text, then tap where you want to place it.</div>
+  <div id="textPanelTitle" style="font-size:13px;color:var(--muted)">Enter text, pick a size, then tap where you want to place it.</div>
   <input id="textInput" placeholder="Text label" />
+  <label class="textSizeRow">Text size
+    <input id="textSizeRange" type="range" min="0.7" max="4" step="0.1" value="1" />
+    <span id="textSizeValue">1.0×</span>
+  </label>
   <div style="display:flex;gap:8px;flex-wrap:wrap">
     <button id="setTextBtn">Set Text</button>
     <button id="cancelTextBtn">Cancel</button>
@@ -219,7 +312,12 @@
   const rectPanel = document.getElementById('rectPanel');
   const iconPanel = document.getElementById('iconPanel');
   const textPanel = document.getElementById('textPanel');
+  const textPanelTitle = document.getElementById('textPanelTitle');
   const textInput = document.getElementById('textInput');
+  const textSizeRange = document.getElementById('textSizeRange');
+  const textSizeValue = document.getElementById('textSizeValue');
+  const editTextBtn = document.getElementById('editTextBtn');
+  const compactBtn = document.getElementById('compactBtn');
   const coordMenu = document.getElementById('coordMenu');
   const moreMenu = document.getElementById('moreMenu');
   const moreBtn = document.getElementById('moreBtn');
@@ -253,6 +351,8 @@
   let iconPanelOpen = false;
   let moreMenuOpen = false;
   let pendingText = '';
+  let pendingTextSize = 1;
+  let editingTextId = null;
   let lastTap = {time:0, x:null, y:null};
   let coordMenuCell = null;
   let longPressTimer = null;
@@ -329,8 +429,15 @@
     const def = ICON_DEF_MAP[icon.type] || ICON_DEF_MAP.union_castle;
     return { id:icon.id || newId(), type:icon.type || 'union_castle', x:+icon.x, y:+icon.y, w:+(icon.w || def.w), h:+(icon.h || def.h), locked:!!icon.locked };
   }
+  function clampTextSize(value) {
+    const n = Number(value);
+    return clamp(Number.isFinite(n) ? n : 1, 0.7, 4);
+  }
+  function textLabelFor(t) {
+    return t && t.coord ? `x: ${t.x}, y: ${t.y}` : String((t && t.text) || '');
+  }
   function normalizeTextRecord(t) {
-    return { id:t.id || newId(), x:+t.x, y:+t.y, text:String(t.coord ? '' : (t.text || '')), coord:!!t.coord, size:+(t.size || 1), locked:!!t.locked };
+    return { id:t.id || newId(), x:+t.x, y:+t.y, text:String(t.coord ? '' : (t.text || '')), coord:!!t.coord, size:clampTextSize(t.size || 1), locked:!!t.locked };
   }
   function hitRect(cell) {
     for (let i=rects.length-1;i>=0;i--) {
@@ -346,12 +453,19 @@
     }
     return -1;
   }
+  function textBoundsCells(t) {
+    const size = clampTextSize(t.size || 1);
+    const label = textLabelFor(t);
+    const approxW = Math.max(1, Math.ceil(label.length * 0.34 * size));
+    const approxH = Math.max(1, Math.ceil(1.15 * size));
+    const halfW = Math.ceil(approxW / 2);
+    const halfH = Math.ceil(approxH / 2);
+    return { x1:t.x - halfW, x2:t.x + halfW + 1, y1:t.y - halfH, y2:t.y + halfH + 1 };
+  }
   function hitText(cell) {
     for (let i=texts.length-1;i>=0;i--) {
-      const t=texts[i];
-      const approxW = Math.max(1, Math.ceil((t.text || '').length / 3));
-      const approxH = Math.max(1, Math.ceil(t.size || 1));
-      if(cell.x>=t.x && cell.x<t.x+approxW && cell.y>=t.y && cell.y<t.y+approxH) return i;
+      const b = textBoundsCells(texts[i]);
+      if(cell.x>=b.x1 && cell.x<b.x2 && cell.y>=b.y1 && cell.y<b.y2) return i;
     }
     return -1;
   }
@@ -629,6 +743,7 @@
     const count = selectedItems.length;
     objectActions.classList.toggle('show', count > 0);
     if (selectionCount) selectionCount.textContent = `${count} selected`;
+    if (editTextBtn) editTextBtn.style.display = (count === 1 && selectedItems[0] && selectedItems[0].kind === 'text') ? '' : 'none';
     const topBar = document.getElementById('top');
     if (topBar) {
       const top = Math.ceil(topBar.getBoundingClientRect().bottom + 8);
@@ -684,6 +799,44 @@
   }
   function setRectStyle(name) { currentStyle = name; setMode('rect'); updateStyleButtons(); }
   function setCurrentIcon(key) { currentIcon = key; setMode('icon'); updateStyleButtons(); }
+  function setTextSizeControl(value) {
+    pendingTextSize = clampTextSize(value);
+    if (textSizeRange) textSizeRange.value = pendingTextSize;
+    if (textSizeValue) textSizeValue.textContent = pendingTextSize.toFixed(1) + '×';
+  }
+  function openTextPanelForNew() {
+    editingTextId = null;
+    if (textPanelTitle) textPanelTitle.textContent = 'Enter text, pick a size, then tap where you want to place it.';
+    if (textInput) { textInput.disabled = false; textInput.value = pendingText || ''; }
+    const btn = document.getElementById('setTextBtn');
+    if (btn) btn.textContent = 'Set Text';
+    setTextSizeControl(pendingTextSize || 1);
+    setMode('text');
+  }
+  function openTextEditor(sel) {
+    const ref = getItemRef(sel);
+    if (!ref || sel.kind !== 'text') { hint.textContent = 'Select a text label first.'; return; }
+    const t = ref.item;
+    if (t.locked) { hint.textContent = 'Locked text. Unlock it before editing.'; return; }
+    editingTextId = t.id;
+    mode = 'text';
+    closeToolMenus(); closeMoreMenu(); hideCoordMenu();
+    if (textPanelTitle) textPanelTitle.textContent = t.coord ? 'Adjust coordinate label size.' : 'Edit text or change the size.';
+    if (textInput) { textInput.disabled = !!t.coord; textInput.value = textLabelFor(t); }
+    const btn = document.getElementById('setTextBtn');
+    if (btn) btn.textContent = 'Update Text';
+    setTextSizeControl(t.size || 1);
+    textPanel.style.display='flex';
+    updateStyleButtons();
+    hint.textContent = t.coord ? 'Adjust size, then tap Update Text.' : 'Edit the label, adjust size, then tap Update Text.';
+    if (!t.coord && textInput) { textInput.focus(); textInput.select(); }
+    draw();
+  }
+  function editSelectedText() {
+    const sel = selectedItems.length === 1 ? selectedItems[0] : (selected && selected.kind === 'text' ? selected : null);
+    if (!sel || sel.kind !== 'text') { hint.textContent = 'Select one text label first.'; return; }
+    openTextEditor(sel);
+  }
   function addHistory(kind, id) { history.push({kind,id}); }
   function undoLast() {
     const last = history.pop();
@@ -837,7 +990,7 @@
       ctx.font = `700 ${fontSize}px system-ui, -apple-system, Segoe UI, sans-serif`;
       ctx.textBaseline = 'middle';
       ctx.textAlign = 'center';
-      const label = t.coord ? `x: ${t.x}, y: ${t.y}` : String(t.text || '');
+      const label = textLabelFor(t);
       const metrics = ctx.measureText(label);
       const tw = metrics.width;
       const th = fontSize;
@@ -1069,7 +1222,7 @@
             textInput.focus();
             hint.textContent = 'Enter text first, then tap Set Text.';
           } else {
-            const t = { id:newId(), x:cell.x, y:cell.y, text:pendingText, size:1 };
+            const t = { id:newId(), x:cell.x, y:cell.y, text:pendingText, size:pendingTextSize };
             texts.push(t); addHistory('text', t.id); setSingleSelection({kind:'text', index:texts.length-1}); saveLocal(); hint.textContent=`Text placed • x: ${t.x}, y: ${t.y}`;
           }
         } else if(mode==='delete') {
@@ -1097,7 +1250,9 @@
             hint.textContent = `Selected ${selectedItems.length} item${selectedItems.length===1?'':'s'}.`;
           } else {
             setSingleSelection(hit);
-            if (isDouble) {
+            if (isDouble && hit && hit.kind === 'text') {
+              openTextEditor(hit);
+            } else if (isDouble) {
               showCoordMenu(cell, e.clientX, e.clientY);
             } else {
               hideCoordMenu();
@@ -1215,12 +1370,26 @@
     draw();
   }
 
+  function setToolbarCompact(compact) {
+    document.body.classList.toggle('toolbarMini', !!compact);
+    if (compactBtn) compactBtn.textContent = compact ? 'Full Toolbar' : 'Compact Toolbar';
+    try { localStorage.setItem('hive_planner_toolbar_compact', compact ? '1' : '0'); } catch(e) {}
+    closeToolMenus(); closeMoreMenu(); updateToolTrayPosition(); updateObjectActions();
+    hint.textContent = compact ? 'Toolbar compacted. Use More → Full Toolbar to bring it back.' : 'Full toolbar restored.';
+    draw();
+  }
+  function loadToolbarPreference() {
+    try { if (localStorage.getItem('hive_planner_toolbar_compact') === '1') document.body.classList.add('toolbarMini'); } catch(e) {}
+    if (compactBtn) compactBtn.textContent = document.body.classList.contains('toolbarMini') ? 'Full Toolbar' : 'Compact Toolbar';
+  }
+
   document.getElementById('panBtn').onclick=()=>setMode('pan');
   document.getElementById('rectsBtn').onclick=()=>openToolMenu('rect');
   document.getElementById('iconsBtn').onclick=()=>openToolMenu('icon');
-  document.getElementById('textBtn').onclick=()=>setMode('text');
+  document.getElementById('textBtn').onclick=()=>openTextPanelForNew();
   document.getElementById('deleteBtn').onclick=()=>deleteSelectedItems();
   document.getElementById('lockBtn').onclick=()=>toggleSelectedLock();
+  if (editTextBtn) editTextBtn.onclick=()=>editSelectedText();
   if (moreBtn) moreBtn.onclick=()=>toggleMoreMenu();
   document.getElementById('deleteModeBtn').onclick=()=>{ closeMoreMenu(); setMode('delete'); };
   document.addEventListener('pointerdown', e => {
@@ -1257,6 +1426,7 @@
 
   const panel=document.getElementById('jsonPanel'), txt=document.getElementById('jsonText');
   document.getElementById('jsonBtn').onclick=()=>{ closeMoreMenu(); txt.value=JSON.stringify(exportData(),null,2); panel.style.display='flex'; };
+  if (compactBtn) compactBtn.onclick=()=>setToolbarCompact(!document.body.classList.contains('toolbarMini'));
   document.getElementById('closeJsonBtn').onclick=()=>panel.style.display='none';
   document.getElementById('copyBtn').onclick=async()=>{ txt.select(); try{ await navigator.clipboard.writeText(txt.value); }catch(e){ document.execCommand('copy'); } };
   document.getElementById('loadBtn').onclick=()=>{
@@ -1274,17 +1444,44 @@
 
   document.getElementById('setTextBtn').onclick=()=>{
     const value = textInput.value.trim();
+    const selectedSize = clampTextSize(textSizeRange ? textSizeRange.value : pendingTextSize);
+    if (editingTextId) {
+      const t = texts.find(x => x.id === editingTextId);
+      if (!t) { editingTextId = null; hint.textContent='That text label no longer exists.'; return; }
+      if (t.locked) { hint.textContent='Locked text. Unlock it before editing.'; return; }
+      if (!t.coord) {
+        if (!value) { hint.textContent='Type something first.'; return; }
+        t.text = value;
+        pendingText = value;
+      }
+      t.size = selectedSize;
+      pendingTextSize = selectedSize;
+      editingTextId = null;
+      if (textInput) textInput.disabled = false;
+      textPanel.style.display='none';
+      mode='pan';
+      saveLocal();
+      updateStyleButtons();
+      updateLockButton();
+      hint.textContent='Text updated. You can drag it to move it or tap Text to place another label.';
+      draw();
+      return;
+    }
     if (!value) { hint.textContent='Type something first.'; return; }
     pendingText = value;
+    pendingTextSize = selectedSize;
     textPanel.style.display='none';
     mode='text';
     closeToolMenus();
     updateStyleButtons();
-    hint.textContent='Text ready. Tap the map to place it.';
+    hint.textContent=`Text ready at ${pendingTextSize.toFixed(1)}×. Tap the map to place it.`;
     draw();
   };
+  if (textSizeRange) textSizeRange.oninput=()=>setTextSizeControl(textSizeRange.value);
   document.getElementById('coordMenuBtn').onclick=()=>placeCoordTextFromMenu();
   document.getElementById('cancelTextBtn').onclick=()=>{
+    editingTextId = null;
+    if (textInput) textInput.disabled = false;
     textPanel.style.display='none';
     if (mode==='text') setMode('pan');
   };
@@ -1343,6 +1540,15 @@
     const splash = document.getElementById('splash');
     if (splash) splash.classList.add('hidden');
   }
+
+  const splashLogoVideo = document.getElementById('splashLogo');
+  if (splashLogoVideo && splashLogoVideo.tagName === 'VIDEO') {
+    const tryPlaySplash = () => splashLogoVideo.play().catch(() => {});
+    splashLogoVideo.muted = true;
+    splashLogoVideo.playsInline = true;
+    tryPlaySplash();
+    window.addEventListener('pointerdown', tryPlaySplash, { once:true });
+  }
   const splashEnter = document.getElementById('splashEnter');
   if (splashEnter) {
     splashEnter.addEventListener('click', hideSplash);
@@ -1356,6 +1562,7 @@
     }
   });
   // No auto-dismiss: the splash remains visible until Enter Planner is clicked.
+  loadToolbarPreference();
 
   bg.onload=()=>{ pattern=ctx.createPattern(bg,'repeat'); updateStyleButtons(); resize(); loadLocal(); updateObjectActions(); centerOnCell(500,500); };
   window.addEventListener('resize', () => { resize(); positionMoreMenu(); updateObjectActions(); });
