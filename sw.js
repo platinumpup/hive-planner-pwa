@@ -1,4 +1,4 @@
-const CACHE_NAME = 'hive-planner-eye-enter-v1';
+const CACHE_NAME = 'hive-planner-oof-split-eye-exit-v1';
 const ASSETS = [
   './',
   './index.html',
@@ -7,7 +7,11 @@ const ASSETS = [
   './icons/icon-192.png',
   './icons/icon-512.png',
   './icons/cat-bees-transparent.png',
-  './icons/oof-splash-oof.webp',
+  './icons/oof-splash-1.webp',
+  './icons/oof-splash-2.webp',
+  './icons/oof-splash-3.webp',
+  './icons/oof-splash-4.webp',
+  './icons/oof-splash-5.webp',
   './icons/oof-splash-organized.webp',
   './icons/oof-splash-chaos.webp',
   './icons/oof-splash-eye.webp'
