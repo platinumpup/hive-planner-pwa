@@ -1,4 +1,4 @@
-const CACHE_NAME = 'hive-planner-v11-new-light-video-splash';
+const CACHE_NAME = 'hive-planner-v15-text-hitbox-fix';
 const ASSETS = [
   './',
   './index.html',
@@ -7,8 +7,10 @@ const ASSETS = [
   './icons/icon-192.png',
   './icons/icon-512.png',
   './icons/cat-bees-transparent.png',
-  './icons/oof-organizedchaos-animated.mp4',
-  './icons/oof-organizedchaos-animated-poster.jpg'
+  './icons/oof-splash-oof.webp',
+  './icons/oof-splash-organized.webp',
+  './icons/oof-splash-chaos.webp',
+  './icons/oof-splash-eye.webp'
 ];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS)));
