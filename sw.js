@@ -1,4 +1,4 @@
-const CACHE_NAME = 'hive-planner-v15-text-hitbox-fix';
+const CACHE_NAME = 'hive-planner-eye-enter-v1';
 const ASSETS = [
   './',
   './index.html',

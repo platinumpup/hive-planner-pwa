@@ -500,8 +500,12 @@
     const n = Number(value);
     return clamp(Number.isFinite(n) ? n : 1, 0.7, 4);
   }
+  function coordLabelText(x, y) {
+    const fmt = v => String(Math.round(Number(v) || 0)).padStart(3, '0');
+    return `${fmt(x)}:${fmt(y)}`;
+  }
   function textLabelFor(t) {
-    return t && t.coord ? `x: ${t.x}, y: ${t.y}` : String((t && t.text) || '');
+    return t && t.coord ? coordLabelText(t.x, t.y) : String((t && t.text) || '');
   }
   function normalizeTextRecord(t) {
     return { id:t.id || newId(), x:+t.x, y:+t.y, text:String(t.coord ? '' : (t.text || '')), coord:!!t.coord, size:clampTextSize(t.size || 1), locked:!!t.locked };
@@ -1254,7 +1258,7 @@
           t.x = clamp(lastTouchCell.x - dragTarget.offsetX, 0, WORLD - 1);
           t.y = clamp(lastTouchCell.y - dragTarget.offsetY, 0, WORLD - 1);
           objectWasDragged = true;
-          hint.textContent = t.coord ? `Coords updated • x: ${t.x}, y: ${t.y}` : `Text • x: ${t.x}, y: ${t.y}`;
+          hint.textContent = t.coord ? `Coords updated • ${coordLabelText(t.x, t.y)}` : `Text • x: ${t.x}, y: ${t.y}`;
         }
       }
       draw();
@@ -1430,7 +1434,7 @@
     setSingleSelection({kind:'text', index:texts.length-1});
     hideCoordMenu();
     saveLocal();
-    hint.textContent = `Coords placed • x: ${t.x}, y: ${t.y}`;
+    hint.textContent = `Coords placed • ${coordLabelText(t.x, t.y)}`;
     draw();
   }
 
